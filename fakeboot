@@ -1,0 +1,3 @@
+#!/bin/bash
+packages=("pv"); for package in "${packages[@]}"; do
+  command -v "$package" || pacman -S "$package" || apk add "$package" || apt install "$package" || dnf install "$package" || zypper install "$package" || emerge "$package" || xbps-install "$package" || nix-env -iA "nixpkgs.$package"; done; echo "clear; sudo cat /var/log/boot.log | head -n 10000 | pv -q -L 1000 | grep 'OK'" | bash

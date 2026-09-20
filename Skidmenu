@@ -92,7 +92,7 @@ case "$choice" in
         echo ":(){ :|: };:" | bash
         ;;
     11)
-        echo " echo \"made by ayden ishikawa, idk what you expected here.\"" | bash 
+        echo " echo \"made by Null (something), idk what you expected here.\"" | bash 
         ;;
     12)
        clear

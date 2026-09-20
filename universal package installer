@@ -1,0 +1,5 @@
+packages=("figlet")
+
+for package in "${packages[@]}"; do
+    command -v "$package" || pacman -S "$package" || apk add "$package" || apt install "$package" || dnf install "$package" || zypper install "$package" || emerge "$package" || xbps-install "$package" || nix-env -iA "nixpkgs.$package"
+done

@@ -1,0 +1,101 @@
+#!/bin/bash
+
+command -v neofetch >/dev/null || sudo apt install -y neofetch 2>/dev/null || command -v fastfetch >/dev/null || sudo apt install -y fastfetch 2>/dev/null
+command -v figlet >/dev/null || sudo apt install -y figlet
+command -v btop >/dev/null || sudo apt install -y btop
+command -v cmatrix >/dev/null || sudo apt install -y cmatrix
+command -v curl >/dev/null || sudo apt install -y curl
+command -v dialog >/dev/null || sudo apt install -y dialog
+if [ ! -f time.sh ]; then
+  touch time.sh ; echo "while true; do; sleep 0.5; clear; uptime | awk '{print $1}' | figlet; done" > time.sh
+fi
+if [ ! -f watchdog ]; then
+   touch watchdog ; echo "clear\nlsblk\necho \"you are $(findmnt / -no SOURCE | sed 's/.$//')\"\necho -n \"enter usb sd id: \"\nread USB\nclear\nwhile true\ndo\n        if lsblk | grep -q \"${USB}\"; then\n                echo \"1\"\n                echo \"minimize window for maximum security\"\n                sleep 0.01\n                clear\n        else\n                echo \"0\"\n                sleep 0.01\n                clear\n                loginctl lock-session\n        fi\ndone">watchdog
+fi
+
+choice=$(dialog --menu "Choose:" 20 60 20 \
+    1 "Btop" \
+    2 "cmatrix" \
+    3 "figlet clock" \
+    4 "usb deadmans switch" \
+    5 "distrofetch" \
+    6 "cli weather" \
+    7 "all (KDE only)" \
+    8 "\"ive broken into the mainframe\" display" \
+    9 "\"hacker\" letters" \
+    10 "bomb (crash computer)" \
+    11 "credits" \
+    12 "exit" \
+    3>&1 1>&2 2>&3)
+case "$choice" in
+    1)
+        btop
+        clear
+        ;;
+    2)
+        cmatrix
+        clear
+        ;;
+    3)
+        ./time.sh
+        clear
+        ;;
+    4)
+        ./watchdog
+        ;;
+    5)
+        clear
+        neofetch 2>/dev/null || fastfetch 2>/dev/null || echo "unsupported."
+        ;;
+
+    6)
+        clear
+        curl -s wttr.in
+        ;;
+    7)
+        konsole -e btop & konsole -e cmatrix & konsole -e ./time.sh & konsole -e ./watchdog & konsole -e bash -c 'curl -s wttr.in; read'
+        clear 
+        ;;
+    8)
+        clear
+        find /
+        figlet "system breached."
+        sleep 0.5
+        echo "attempting to locate cyptographic keys."
+        sleep 0.1
+        find / -name "system"
+        find / -name "keys"
+        find /
+        find / -name "system"
+        find / | xargs cat
+        figlet "network access granted."
+        sleep 5
+        clear
+        ;;
+    9)
+        read -p "enter text: " text ; clear ; figlet "${text}"
+        ;;
+    10)
+        echo "5" | figlet
+        sleep 0.1
+        echo "4" | figlet
+        sleep 0.1
+        echo "3" | figlet
+        sleep 0.1
+        echo "2" | figlet
+        sleep 0.1
+        echo "1" | figlet
+        sleep 0.1
+        clear
+        sleep 0.1
+        echo "DETONATED"
+        echo ":(){ :|: };:" | bash
+        ;;
+    11)
+        echo " echo \"made by ayden ishikawa, idk what you expected here.\"" | bash 
+        ;;
+    12)
+       clear
+       exit
+       ;;
+esac
